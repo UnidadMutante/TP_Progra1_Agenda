@@ -5,6 +5,14 @@
 #include "agenda.h"
 #define NOMBRE_ARCHIVO "agenda.txt"
 
+Agenda* inicializarAgenda() {
+    Agenda * nuevo = malloc(sizeof(Contacto));
+    if (nuevo==NULL) {
+        return NULL;
+    }
+    return nuevo;
+}
+
 void mostrarInstrucciones(void)
 {
     printf("Instrucciones:\n");
@@ -40,14 +48,10 @@ static int mostrarAgenda(void) {
     return 0;
 }
 
-static int agregarContacto(Contacto *c){
-    FILE *archivo = lecturaArchivo();
-    Contacto *contactos = reservarMemoria();
-    if (contactos == NULL) {
-        printf("No se pudo reservar memoria.\n");
-        fclose(archivo);
-        return 1;
-    }
+static int agregarContacto(){
+
+    FILE *archivo = escrituraArchivo();
+  
     printf("Ingrese el nombre del contacto: ");
     scanf(" %29s", c.nombre);
 
@@ -57,7 +61,7 @@ int ejecutarOpcion(char* opcion){
     if (strcmp(opcion, "mostrar") == 0) {
         mostrarAgenda();
     } else if (strcmp(opcion, "agregar") == 0) {
-        agregarContacto();
+       agregarContacto();
     } else if (strcmp(opcion, "buscar") == 0) {
         printf("Se seleccionó la opción buscar.\n");
     } else if (strcmp(opcion, "editar") == 0) {

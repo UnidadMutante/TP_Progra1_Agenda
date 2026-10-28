@@ -1,6 +1,6 @@
 #ifndef __AGENDA_H__
 #define __AGENDA_H__
-
+#include <stddef.h>
 #define MAX_CHARS 30
 #define PHONE_LENGTH 17
 
@@ -19,18 +19,14 @@ typedef struct {
 } Contacto;
 
 typedef struct {
-    Contacto *items;   // arreglo dinámico
-    size_t cantidad;   // cuántos contactos hay
-    size_t capacidad;  // cuánto espacio reservado hay
-    int proximo_id;
+    Contacto *contactos;  
+    size_t tamano;   
 } Agenda;
 
+Agenda* inicializarAgenda();
 void mostrarInstrucciones(void);
 int ejecutarOpcion(char *opcion);
-static FILE lecturaArchivo();
-static int mostrarAgenda();
-static void agregarContacto(Contacto *c);
-static void guardarContacto(Contacto *c);
+
 // verListaContactos
 // verDetalleContacto
 // editarContacto
