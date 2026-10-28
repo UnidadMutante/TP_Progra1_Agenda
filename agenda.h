@@ -1,9 +1,14 @@
-#ifndef AGENDA_H
-#define AGENDA_H
+#ifndef __AGENDA_H__
+#define __AGENDA_H__
 
 #define MAX_CHARS 30
 #define PHONE_LENGTH 17
 
+/*
+1. **Estructuras de datos:**
+   - Define una estructura para representar los contactos en la agenda. 
+   Puedes incluir campos como nombre, número de teléfono, dirección, correo electrónico, etc.
+*/
 typedef struct {
     int id;
     char nombre[MAX_CHARS];
@@ -13,8 +18,19 @@ typedef struct {
     char email[MAX_CHARS];
 } Contacto;
 
+typedef struct {
+    Contacto *items;   // arreglo dinámico
+    size_t cantidad;   // cuántos contactos hay
+    size_t capacidad;  // cuánto espacio reservado hay
+    int proximo_id;
+} Agenda;
 
-// agregarContacto
+void mostrarInstrucciones(void);
+int ejecutarOpcion(char *opcion);
+static FILE lecturaArchivo();
+static int mostrarAgenda();
+static void agregarContacto(Contacto *c);
+static void guardarContacto(Contacto *c);
 // verListaContactos
 // verDetalleContacto
 // editarContacto

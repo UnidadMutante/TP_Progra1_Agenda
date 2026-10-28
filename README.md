@@ -29,3 +29,9 @@ $> ./agenda datos.txt mostrar
    - Proporciona instrucciones claras sobre cómo utilizar las funciones de la agenda a través de la interfaz de línea de comandos.
 
 Esta consigna te permitirá desarrollar una agenda simple en C, utilizando archivos para almacenar la información de los contactos. La interfaz de línea de comandos permitirá al usuario interactuar con la agenda para realizar operaciones como agregar, eliminar, buscar y mostrar contactos de manera eficiente.
+
+● Condiciones:
+ Los TIF deben hacer uso, al menos de: 
+ ○ Archivos. 
+ ○ Memoria dinámica & punteros. 
+ ○ variables y variables definida por usuario.
