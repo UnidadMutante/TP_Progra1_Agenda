@@ -15,12 +15,13 @@ $> ./agenda datos.txt mostrar
 
 */
 int main (int argc, char *argv[]) {
-    Agenda * agenda = inicializarAgenda();
+
     if (argc != 2) {
         printf("Error de ejecución.\n"); 
         mostrarInstrucciones();
         return 1;
-    };    
+    };
+    
     ejecutarOpcion(argv[1]);
 
       // cerrar archivo

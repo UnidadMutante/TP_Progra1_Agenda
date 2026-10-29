@@ -18,14 +18,11 @@ typedef struct {
     char email[MAX_CHARS];
 } Contacto;
 
-typedef struct {
-    Contacto *contactos;  
-    size_t tamano;   
-} Agenda;
-
-Agenda* inicializarAgenda();
+Contacto *reservarMemoria();
 void mostrarInstrucciones(void);
 int ejecutarOpcion(char *opcion);
+void agregarContacto(Contacto *nuevo);
+void guardarContacto(FILE *archivo, Contacto *nuevo);
 
 // verListaContactos
 // verDetalleContacto

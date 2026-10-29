@@ -5,8 +5,9 @@
 #include "agenda.h"
 #define NOMBRE_ARCHIVO "agenda.txt"
 
-Agenda* inicializarAgenda() {
-    Agenda * nuevo = malloc(sizeof(Contacto));
+
+Contacto *reservarMemoria() {
+    Contacto * nuevo = (Contacto*)malloc(sizeof(Contacto));
     if (nuevo==NULL) {
         return NULL;
     }
@@ -48,20 +49,31 @@ static int mostrarAgenda(void) {
     return 0;
 }
 
-static int agregarContacto(){
+void agregarContacto(Contacto * nuevo){
+// un arreglo decae a un puntero a su primer elemento. Ya es una dirección, así que no lleva &.
+        printf("Ingrese el nombre del contacto: ");
+        scanf(" %29s", nuevo->nombre);
+    // p[i].precio equivale a (p + i)->precio    
 
-    FILE *archivo = escrituraArchivo();
-  
-    printf("Ingrese el nombre del contacto: ");
-    scanf(" %29s", c.nombre);
+    }
 
-}
+void guardarContacto(FILE *archivo, Contacto *nuevo) {
+    fprintf(archivo, "Nombre: %s", nuevo->nombre);
+    }
 
 int ejecutarOpcion(char* opcion){
     if (strcmp(opcion, "mostrar") == 0) {
         mostrarAgenda();
     } else if (strcmp(opcion, "agregar") == 0) {
-       agregarContacto();
+       FILE *archivo = escrituraArchivo();
+       Contacto *nuevo = reservarMemoria();
+    if (nuevo == NULL) {
+        printf("No se pudo reservar memoria.\n");
+         fclose(archivo);
+        return 1;
+    }
+       agregarContacto(nuevo);
+       guardarContacto(archivo, nuevo);
     } else if (strcmp(opcion, "buscar") == 0) {
         printf("Se seleccionó la opción buscar.\n");
     } else if (strcmp(opcion, "editar") == 0) {
@@ -70,6 +82,7 @@ int ejecutarOpcion(char* opcion){
         printf("Se seleccionó la opción eliminar.\n");
     } else {
         printf("Opción inválida: %s\n", opcion);
+        mostrarInstrucciones();
         return 1;
     }
     return 0; 
