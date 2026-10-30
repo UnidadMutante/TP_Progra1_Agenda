@@ -1,6 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>  
 #include "agenda.h"
 
 
@@ -23,15 +21,5 @@ int main (int argc, char *argv[]) {
     };
     
     ejecutarOpcion(argv[1]);
-
-      // cerrar archivo
-    //fclose(archivo);
-
-    // liberar memoria
-    //free(contactos);
-    
-    // evitar dangling pointers
-    //archivo = NULL;
-    //productos = NULL;
     return 0;
 }
