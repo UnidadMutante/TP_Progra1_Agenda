@@ -13,15 +13,7 @@ typedef struct {
     int id;
     char nombre[MAX_CHARS];
     char telefono_main[PHONE_LENGTH];
-    char telefono_alt[PHONE_LENGTH];
-    char direccion[MAX_CHARS];
-    char email[MAX_CHARS];
 } Contacto;
-
-typedef struct {
-    size_t tamano;
-    Contacto contacto;
-}
 
 Contacto *reservarMemoria();
 void mostrarInstrucciones(void);
