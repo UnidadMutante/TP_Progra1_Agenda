@@ -20,7 +20,6 @@ void mostrarInstrucciones(void)
     printf("./agenda mostrar  -> ver la lista de contactos\n");
     printf("./agenda agregar  -> agregar un contacto\n");
     printf("./agenda buscar   -> buscar y visualizar un contacto\n");
-    printf("./agenda editar   -> editar un contacto\n");
     printf("./agenda eliminar -> eliminar un contacto\n");
 }
 
@@ -53,12 +52,14 @@ void agregarContacto(Contacto * nuevo){
 // un arreglo decae a un puntero a su primer elemento. Ya es una dirección, así que no lleva &.
         printf("Ingrese el nombre del contacto: ");
         scanf(" %29s", nuevo->nombre);
+        nuevo->id = nuevo->id + 1;
     // p[i].precio equivale a (p + i)->precio    
 
     }
 
 void guardarContacto(FILE *archivo, Contacto *nuevo) {
-    fprintf(archivo, "Nombre: %s", nuevo->nombre);
+    fprintf(archivo, "\nNombre: %s", nuevo->nombre);
+    fprintf(archivo, "\nID: %d", nuevo->id);
     }
 
 int ejecutarOpcion(char* opcion){
