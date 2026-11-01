@@ -14,8 +14,6 @@ void mostrarInstrucciones(void)
     printf("./agenda eliminar -> eliminar un contacto\n");
 }
 
-// REVISAR BIEN CARGAR CONTACTO Y LA PARTE DE POR QUE SI ESCRIBO 2 PALABRAS . EL ESPACIO HACE QUE SE CONSIDERE COMPLETADO EL TELEFONO
-
 // si aun no hay ningun contacto, hago malloc, 
 // si ya hay algun contacto, hago realloc, para expandir la memoria del arreglo
 // y sumo la cantidad
@@ -38,7 +36,7 @@ size_t contarContactos(void) {
     size_t cantidad = 0;
     Contacto leido;
     fread(&leido, sizeof(Contacto), 1, archivo);
-    // mientras no hayamos encontrado el end of file seguimos leyendo
+    // mientras no hayamos encontrado el EOF seguimos leyendo
     while (!feof(archivo)) {
         cantidad++;
     // le pasamos 1 para que fread lea de a 1 elemento ( 1 x sizeof(Contacto))
@@ -68,20 +66,20 @@ int ingresarDatos(Contacto *nuevo, int id) {
     printf("Ingrese el nombre del contacto: ");
     scanf(" %29s", nuevo->nombre);
     printf("Ingrese el telefono: ");
-    scanf(" %16s", nuevo->telefono_main);
+    scanf(" %16s", nuevo->telefono);
     return 0;
 }
 
 //guardo con fwrite - esta funcion es llamada por agregarContacto
-int guardarContacto(FILE *archivo, const Contacto *nuevo) {
+int guardarContacto(FILE *archivo, Contacto *nuevo) {
     if (fwrite(nuevo, sizeof(Contacto), 1, archivo) != 1) {
         return 1;
     }
     return 0;
 }
 
-void mostrarContacto(const Contacto *contacto) {
-    printf("%d - %s - %s\n", contacto->id, contacto->nombre, contacto->telefono_main);
+void mostrarContacto(Contacto *contacto) {
+    printf("%d - %s - %s\n", contacto->id, contacto->nombre, contacto->telefono);
 }
 
 
@@ -158,47 +156,31 @@ int agregarContacto(Contacto **contactos, size_t *cantidad) {
     return contactoGuardado;
 }
 
-// Para buscarContacto Muestra un mensaje y lee una línea del teclado con fgets.
-// Le saca el '\n' del final. Devuelve 0 si salió bien y 1 si falló.
-int leerTexto(const char *mensaje, char *destino, size_t tamano) {
-    printf("%s", mensaje);
-    if (fgets(destino, tamano, stdin) == NULL) {
-        return 1;
-    }
-    size_t largo = strlen(destino);
-    if (largo > 0 && destino[largo - 1] == '\n') {
-        destino[largo - 1] = '\0';
-    } else {
-        // el texto era más largo que el arreglo: descartamos lo que sobró
-        int caracter = fgetc(stdin);
-        while (caracter != '\n' && caracter != EOF) {
-            caracter = fgetc(stdin);
-        }
-    }
-    return 0;
-}
- 
-int buscarContacto(const Contacto *contactos, size_t cantidad) {
+int buscarContacto(Contacto *contactos, size_t cantidad) {
     char buscado[MAX_CHARS];
-    if (leerTexto("Ingrese el nombre (o parte) a buscar: ", buscado, MAX_CHARS) != 0) {
-        return 1;
-    }
+
+    printf("Ingrese el nombre a buscar: ");
+    scanf(" %59s", buscado);
+
     int encontrados = 0;
+
     for (size_t i = 0; i < cantidad; i++) {
         if (strstr(contactos[i].nombre, buscado) != NULL) {
             mostrarContacto(&contactos[i]);
             encontrados++;
         }
     }
+
     if (encontrados == 0) {
         printf("No se encontraron contactos.\n");
     }
+
     return 0;
 }
 
 // Para eliminar correctamente y dejar en orden el archivo
 //Reescribe el archivo completo con lo que hay en el arreglo ("wb" lo pisa).
-int guardarContactos(const Contacto *contactos, size_t cantidad) {
+int guardarContactos(Contacto *contactos, size_t cantidad) {
     FILE *archivo = fopen(NOMBRE_ARCHIVO, "wb");
     if (archivo == NULL) {
         perror("Error al abrir el archivo para escritura");
@@ -217,33 +199,37 @@ int guardarContactos(const Contacto *contactos, size_t cantidad) {
 }
  
 int eliminarContacto(Contacto *contactos, size_t *cantidad) {
-    char entrada[12];
-    if (leerTexto("Ingrese el id del contacto a eliminar: ", entrada, 12) != 0) {
-        return 1;
-    }
-    int id = atoi(entrada);   // si no era un número devuelve 0, y los ids empiezan en 1
- 
-    size_t posicion = *cantidad;   // "no encontrado"
+
+    int id;
+
+    printf("Ingrese el id del contacto a eliminar: ");
+    scanf("%d", &id);
+
+    size_t posicion = *cantidad;
+
     for (size_t i = 0; i < *cantidad; i++) {
         if (contactos[i].id == id) {
             posicion = i;
         }
     }
+
     if (posicion == *cantidad) {
         printf("No existe un contacto con id %d.\n", id);
         return 1;
     }
- 
-    // corremos un lugar hacia atrás todo lo que estaba después del eliminado
+
     for (size_t i = posicion; i + 1 < *cantidad; i++) {
         contactos[i] = contactos[i + 1];
     }
+
     (*cantidad)--;
- 
+
     if (guardarContactos(contactos, *cantidad) != 0) {
         return 1;
     }
+
     printf("Contacto eliminado.\n");
+
     return 0;
 }
  
