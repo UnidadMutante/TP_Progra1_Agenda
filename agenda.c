@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>  
-
 #include "agenda.h"
 #define NOMBRE_ARCHIVO "agenda.txt"
 
@@ -51,12 +50,10 @@ int cargarContactos(Contacto *contactos, size_t cantidad) {
 }
 
 //OPCION MOSTRAR
-
 //se usa en mostrarAgenda y en buscarContacto
 void mostrarContacto(Contacto *contacto) {
     printf("\nId %d: \n- Nombre: %s \n- Apellido: %s \n- Teléfono: %s\n", contacto->id, contacto->nombre, contacto->apellido, contacto->telefono);
 }
-
 int mostrarAgenda(void) {
     FILE *archivo = fopen(NOMBRE_ARCHIVO, "rb");;
     if (archivo == NULL) {
@@ -78,7 +75,6 @@ int mostrarAgenda(void) {
 }
 
 //OPCION AGREGAR
-
 Contacto *reservarMemoria(Contacto *contactos, size_t cantidad) {
     if (cantidad == 0) {
         return malloc(sizeof(Contacto));
@@ -97,17 +93,15 @@ int ingresarDatos(Contacto *nuevo, int id) {
     scanf(" %16s", nuevo->telefono);
     return 0;
 }
-
-//guardo con fwrite - esta funcion es llamada por agregarContacto
+//guardo con fwrite - esta funcion es llamada por agregarContacto y por reescribirArchivo (post deletion)
 int guardarContacto(FILE *archivo, Contacto *nuevo) {
     if (fwrite(nuevo, sizeof(Contacto), 1, archivo) != 1) {
         return 1;
     }
     return 0;
 }
-
-// uso un puntero al puntero. guardo lo que me devolcio reservar memoria en tmp
-// y recien despues lo guardo en contactos
+// uso un puntero al puntero para poder modificar el puntero original del main. 
+//guardo lo que me devolvio reservar memoria en tmp  y recien despues lo guardo en contactos
 int agregarContacto(Contacto **contactos, size_t *cantidad) {
     Contacto *tmp = reservarMemoria(*contactos, *cantidad);
     if (tmp == NULL) {
@@ -154,7 +148,6 @@ int agregarContacto(Contacto **contactos, size_t *cantidad) {
 }
 
 //OPCION BUSCAR
-
 int buscarContacto(Contacto *contactos, size_t cantidad) {
     char buscado[MAX_CHARS];
     printf("Ingrese el nombre a buscar: ");

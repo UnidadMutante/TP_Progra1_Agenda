@@ -10,8 +10,6 @@ int main (int argc, char *argv[]) {
         mostrarInstrucciones();
         return 1;
     }
-    
-    //Declaro un arreglo de estructuras al que luego le voy a asignar memoria dinámica. 
     Contacto *contactos = NULL;
     size_t cantidad = 0;
 
@@ -30,7 +28,6 @@ int main (int argc, char *argv[]) {
         }
     }
 
-// pongo esto aca y no en agenda.c porque inicialice el array de  contactos aca
     if (strcmp(argv[1], "mostrar") == 0) {
         mostrarAgenda();
     } else if (strcmp(argv[1], "agregar") == 0) {
