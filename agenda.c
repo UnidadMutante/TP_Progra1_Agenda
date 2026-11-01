@@ -54,7 +54,7 @@ int cargarContactos(Contacto *contactos, size_t cantidad) {
 
 //se usa en mostrarAgenda y en buscarContacto
 void mostrarContacto(Contacto *contacto) {
-    printf("%d - %s - %s\n", contacto->id, contacto->nombre, contacto->telefono);
+    printf("\nId %d: \n- Nombre: %s \n- Apellido: %s \n- Teléfono: %s\n", contacto->id, contacto->nombre, contacto->apellido, contacto->telefono);
 }
 
 int mostrarAgenda(void) {
@@ -79,9 +79,6 @@ int mostrarAgenda(void) {
 
 //OPCION AGREGAR
 
-// si aun no hay ningun contacto, hago malloc, 
-// si ya hay algun contacto, hago realloc, para expandir la memoria del arreglo
-// y sumo la cantidad
 Contacto *reservarMemoria(Contacto *contactos, size_t cantidad) {
     if (cantidad == 0) {
         return malloc(sizeof(Contacto));
@@ -89,12 +86,13 @@ Contacto *reservarMemoria(Contacto *contactos, size_t cantidad) {
     return realloc(contactos, (cantidad + 1) * sizeof(Contacto));
 }
 
-
 // un arreglo decae a un puntero a su primer elemento. Ya es una dirección, así que no lleva &.
 int ingresarDatos(Contacto *nuevo, int id) {
     nuevo->id = id;
     printf("Ingrese el nombre del contacto: ");
     scanf(" %29s", nuevo->nombre);
+        printf("Ingrese el apellido del contacto: ");
+    scanf(" %29s", nuevo->apellido);
     printf("Ingrese el telefono: ");
     scanf(" %16s", nuevo->telefono);
     return 0;
@@ -160,7 +158,7 @@ int agregarContacto(Contacto **contactos, size_t *cantidad) {
 int buscarContacto(Contacto *contactos, size_t cantidad) {
     char buscado[MAX_CHARS];
     printf("Ingrese el nombre a buscar: ");
-    scanf(" %59s", buscado);
+    scanf(" %29s", buscado);
     int encontrados = 0;
     for (size_t i = 0; i < cantidad; i++) {
         if (strstr(contactos[i].nombre, buscado) != NULL) {
@@ -195,9 +193,12 @@ int reescribirArchivo(Contacto *contactos, size_t cantidad) {
 }
  
 int eliminarContacto(Contacto *contactos, size_t *cantidad) {
-    int id;
+    int id = 0;
     printf("Ingrese el id del contacto a eliminar: ");
-    scanf("%d", &id);
+    if (scanf("%d", &id) != 1) {
+        printf("El id debe ser un número.\n");
+        return 1;
+        }
     size_t posicion = *cantidad;
     for (size_t i = 0; i < *cantidad; i++) {
         if (contactos[i].id == id) {

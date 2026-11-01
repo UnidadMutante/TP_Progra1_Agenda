@@ -8,6 +8,7 @@
 typedef struct {
     int id;
     char nombre[MAX_CHARS];
+    char apellido[MAX_CHARS];
     char telefono[PHONE_LENGTH];
 } Contacto;
 
