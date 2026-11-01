@@ -3,35 +3,53 @@
 #include <string.h>  
 #include "agenda.h"
 
-
-/*
-2. **Interfaz de línea de comandos:**
-   - Diseña una interfaz de línea de comandos que permita al usuario realizar acciones como agregar contactos, eliminar contactos, ver todos los contactos y buscar contactos por nombre u información específica.
-
-Esta interfaz debe ser desde el programa siempre que sea posible.
-```sh
-$> ./agenda datos.txt mostrar
-```
-
-*/
 int main (int argc, char *argv[]) {
 
     if (argc != 2) {
         printf("Error de ejecución.\n"); 
         mostrarInstrucciones();
         return 1;
-    };
+    }
     
-    ejecutarOpcion(argv[1]);
+    //Declaro un arreglo de estructuras al que luego le voy a asignar memoria dinámica. 
+    Contacto *contactos = NULL;
+    size_t cantidad = 0;
 
-      // cerrar archivo
-    //fclose(archivo);
+    // como inicialice la cantidad en 0 y quiero que el programa
+    // no vuelva a iniciar los contactos en 0 cada vez que lo vuelvo a 
+    // ejecutar.. analizo los contactos que tengo en el archivo
+    cantidad = contarContactos();
+    if (cantidad > 0) {
+        contactos = malloc(cantidad * sizeof(Contacto));
+        if (contactos == NULL) {
+            printf("No se pudo reservar memoria.\n");
+            return 1;
+        }
+        // si cargarContactos devuelve 1 es que fallo
+        // Asi que analizo si falló para liberar memoria != 0 es igual a fallo
+        if (cargarContactos(contactos, cantidad) != 0) {
+            free(contactos);
+            return 1;
+        }
+    }
 
-    // liberar memoria
-    //free(contactos);
-    
-    // evitar dangling pointers
-    //archivo = NULL;
-    //productos = NULL;
-    return 0;
+    //Analizo y ejecuto la opcion
+    // pongo esto aca y no en agenda.c porque inicialice el array de 
+    //contactos aca
+    if (strcmp(argv[1], "mostrar") == 0) {
+        mostrarAgenda();
+    } else if (strcmp(argv[1], "agregar") == 0) {
+        agregarContacto(&contactos, &cantidad);
+    } else if (strcmp(argv[1], "buscar") == 0) {
+        buscarContacto(contactos, cantidad);
+    } else if (strcmp(argv[1], "eliminar") == 0) {
+        eliminarContacto(contactos, &cantidad);
+    } else {
+        printf("Opción inválida: %s\n", argv[1]);
+        mostrarInstrucciones();
+        return 1;
+    }
+
+    free(contactos);
+    return 0; 
 }
