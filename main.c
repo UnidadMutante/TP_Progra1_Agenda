@@ -15,9 +15,7 @@ int main (int argc, char *argv[]) {
     Contacto *contactos = NULL;
     size_t cantidad = 0;
 
-    // como inicialice la cantidad en 0 y quiero que el programa
-    // no vuelva a iniciar los contactos en 0 cada vez que lo vuelvo a 
-    // ejecutar.. analizo los contactos que tengo en el archivo
+    // analizo los contactos que tengo en el archivo
     cantidad = contarContactos();
     if (cantidad > 0) {
         contactos = malloc(cantidad * sizeof(Contacto));
@@ -25,17 +23,14 @@ int main (int argc, char *argv[]) {
             printf("No se pudo reservar memoria.\n");
             return 1;
         }
-        // si cargarContactos devuelve 1 es que fallo
-        // Asi que analizo si falló para liberar memoria != 0 es igual a fallo
+//Analizo si cargarContactos falló para liberar memoria != 0 es igual a fallo
         if (cargarContactos(contactos, cantidad) != 0) {
             free(contactos);
             return 1;
         }
     }
 
-    //Analizo y ejecuto la opcion
-    // pongo esto aca y no en agenda.c porque inicialice el array de 
-    //contactos aca
+// pongo esto aca y no en agenda.c porque inicialice el array de  contactos aca
     if (strcmp(argv[1], "mostrar") == 0) {
         mostrarAgenda();
     } else if (strcmp(argv[1], "agregar") == 0) {
