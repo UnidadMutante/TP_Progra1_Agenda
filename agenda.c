@@ -192,19 +192,25 @@ int eliminarContacto(Contacto *contactos, size_t *cantidad) {
         printf("El id debe ser un número.\n");
         return 1;
         }
+//Creo una variable para guardar la posición donde se encuentre el contacto a eliminar. la igual a cantidad porque es una posicion que estoy segura que no puede ser la del contacto
+// porque la primera posicion de un arreglo es 0 y las cantidades se cuentand esde 1. entonces se que cantidad no es una posicion válida dentro del array
     size_t posicion = *cantidad;
     for (size_t i = 0; i < *cantidad; i++) {
         if (contactos[i].id == id) {
+            // guardo la posición en la cual encontre el match
             posicion = i;
         }
     }
+    // si llegamos aca significa que el id no se encontró
     if (posicion == *cantidad) {
         printf("No existe un contacto con id %d.\n", id);
         return 1;
     }
+// eliminar contacto recorriendo todos los contactos a partir de la posición dontre encontre el match y copiando el siguiente sobre el actual
     for (size_t i = posicion; i + 1 < *cantidad; i++) {
         contactos[i] = contactos[i + 1];
     }
+    // reduzco la cantidad de contactos en 1
     (*cantidad)--;
     if (reescribirArchivo(contactos, *cantidad) != 0) {
         return 1;
